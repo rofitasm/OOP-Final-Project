@@ -1,0 +1,23 @@
+-----MENU------
+----Transisi Mulai-----
+1. Maze
+	-collect senjata
+	-tambah musuh per daerah, ga ngejar
+	-masuk ke gerbang																	-----Transisi-----					
+2. Space Uniter
+	-langsung raja
+	-raja : gak nembak banyak, beberapa detik keluarkan halangan
+	-muncul item : nyawa sama peluru
+	-tugas player: menembak raja sampe mati && menghindari/menembak halangan
+	-nyawa player & raja
+------END(WIN/LOSE)-----
+
+
+**tambahkan
+-suara
+-ranking
+	
+
+
+
+
