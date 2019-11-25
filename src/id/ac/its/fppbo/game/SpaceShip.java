@@ -10,6 +10,8 @@ public class SpaceShip extends Sprite {
 	private int dx;
 	private int dy;
 	private List<Missile> missiles;
+	private int health = 3;
+	private int MAX_HEALTH = 8;
 	
 	public SpaceShip(int x, int y) {
 		super(x,y);
@@ -34,6 +36,14 @@ public class SpaceShip extends Sprite {
 		return missiles;
 	}
 	
+	public void setHealth(int health) {
+		this.health = health;
+	}
+	
+	public int getHealth() {
+		return health;
+	}
+	
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 		
@@ -55,6 +65,16 @@ public class SpaceShip extends Sprite {
 		
 		if(key == KeyEvent.VK_SPACE) {
 			fire();
+		}
+		//test hp
+		if(key == KeyEvent.VK_C) {
+			health-=1;
+			System.out.println(health);
+		}
+		
+		if(key == KeyEvent.VK_V) {
+			health+=1;
+			System.out.println(health);
 		}
 	}
 	

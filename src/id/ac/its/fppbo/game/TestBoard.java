@@ -14,7 +14,7 @@ public class TestBoard extends JFrame {
 		add(new PapanShooter());
 		
 		setTitle("Test Board");
-		setSize(500,700);
+		setSize(500,600);
 		
 		setLocationRelativeTo(null);
 		setResizable(false);

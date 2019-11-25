@@ -1,6 +1,7 @@
 package id.ac.its.fppbo.game;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
@@ -10,20 +11,26 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class PapanShooter extends JPanel implements ActionListener {
 
+	Container con;
 	private Timer timer;
 	private SpaceShip spaceShip;
 	private final int DELAY = 10;
 	private List<Asteroid> asteroid;
 	private int jumlahAsteroid;
 	//posisi pesawat
-	private final int PESAWAT_X = 250;
-	private final int PESAWAT_Y = 500;
+	private final int PESAWAT_X = 230;
+	private final int PESAWAT_Y = 400;
+	
+	JPanel healthBarPanel;
 	
 	public PapanShooter() {
 		initBoard();
@@ -36,6 +43,9 @@ public class PapanShooter extends JPanel implements ActionListener {
 		setFocusable(true);
 		
 		spaceShip = new SpaceShip(PESAWAT_X, PESAWAT_Y);
+		healthBarPanel = new JPanel();
+		healthBarPanel.setBounds(10, 10, 100, 15);
+		healthBarPanel.setBackground(Color.BLUE);
 		
 		timer = new Timer(DELAY, this);
 		timer.start();
@@ -43,7 +53,14 @@ public class PapanShooter extends JPanel implements ActionListener {
 	
 	private void initAsteroidWall() {
 		asteroid = new ArrayList<>();
-		initAsteroid();
+		//mengeluarkan asteroid setiap detik
+		final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+	    executorService.scheduleAtFixedRate(new Runnable() {
+	        @Override          
+	        public void run() {
+	        	initAsteroid();
+	        }
+	    }, 0, 1, TimeUnit.SECONDS);
 	}
 	
 	private void initAsteroid() {
@@ -58,7 +75,7 @@ public class PapanShooter extends JPanel implements ActionListener {
 		}
 		//jarak antar asteroid masih belum pas
 		for(int i=0;i<jumlahAsteroid;i++) {
-			asteroid.add(new Asteroid((int)(Math.random() * 6) * 100,100,1));
+			asteroid.add(new Asteroid((int)(Math.random() * 6) * 100,150,1));
 		}
 	//		asteroid.add(new Asteroid(100,100,1));
 
