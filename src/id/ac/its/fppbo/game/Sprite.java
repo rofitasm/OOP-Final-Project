@@ -1,6 +1,7 @@
 package id.ac.its.fppbo.game;
 
 import java.awt.Image;
+import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
@@ -49,4 +50,7 @@ public class Sprite {
 		return image;
 	}
 	
+	public Rectangle getBound() {
+		return new Rectangle(x, y, width, height);
+	}
 }

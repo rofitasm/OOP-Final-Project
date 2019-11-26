@@ -2,8 +2,11 @@ package id.ac.its.fppbo.game;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,6 +29,7 @@ public class PapanShooter extends JPanel implements ActionListener {
 	private final int DELAY = 10;
 	private List<Asteroid> asteroid;
 	private int jumlahAsteroid;
+	private boolean inGame = true;
 	//posisi pesawat
 	private final int PESAWAT_X = 230;
 	private final int PESAWAT_Y = 400;
@@ -76,6 +80,7 @@ public class PapanShooter extends JPanel implements ActionListener {
 		//jarak antar asteroid masih belum pas
 		for(int i=0;i<jumlahAsteroid;i++) {
 			asteroid.add(new Asteroid((int)(Math.random() * 6) * 100,150,1));
+			
 		}
 	//		asteroid.add(new Asteroid(100,100,1));
 
@@ -89,37 +94,68 @@ public class PapanShooter extends JPanel implements ActionListener {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		doDrawing(g);
+		if(inGame) {
+			doDrawing(g);
+		}else {
+			drawGameOver(g);
+		}
 		
 		Toolkit.getDefaultToolkit().sync();
 	}
 	
 	private void doDrawing(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
-		
-		g2d.drawImage(spaceShip.getImage(), spaceShip.getX(), spaceShip.getY(), this);
+		if(spaceShip.isVisible())
+			g2d.drawImage(spaceShip.getImage(), spaceShip.getX(), spaceShip.getY(), this);
 		
 		List<Missile> missiles = spaceShip.getMissiles();
 		
 		for(Missile missile : missiles) {
-			g2d.drawImage(missile.getImage(), missile.getX(), missile.getY(), this);
+			if(missile.isVisible())
+				g2d.drawImage(missile.getImage(), missile.getX(), missile.getY(), this);
 		}
 		
 		List<Asteroid> asteroids = getAsteroid();
 		
 		for(Asteroid astero : asteroids) {
-			g2d.drawImage(astero.getImage(), astero.getX(), astero.getY(), this);
+			if(astero.isVisible())
+				g2d.drawImage(astero.getImage(), astero.getX(), astero.getY(), this);
 		}
 		
+		g2d.setColor(Color.DARK_GRAY);
+		g2d.fillRect(10, 10, 166, 26);
+		g2d.setColor(Color.RED);
+		g2d.fillRect(13,13,20*spaceShip.getHealth(),20);
 	}
+	
+	private void drawGameOver(Graphics g) {
+
+        String msg = "Game Over";
+        Font small = new Font("Helvetica", Font.BOLD, 14);
+        FontMetrics fm = getFontMetrics(small);
+
+        g.setColor(Color.white);
+        g.setFont(small);
+        g.drawString(msg, (500 - fm.stringWidth(msg)) / 2, 600 / 2);
+    }
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		inGame();
+		
 		updateMissiles();
 		updateSpaceShip();
 		updateAsteroid();
 		
+		checkCollisions();
+		
 		repaint();
+	}
+	
+	private void inGame() {
+		if(!inGame) {
+			timer.stop();
+		}
 	}
 	
 	private void updateMissiles() {
@@ -152,6 +188,30 @@ public class PapanShooter extends JPanel implements ActionListener {
 	
 	private void updateSpaceShip() {
 		spaceShip.move();
+	}
+	
+	private void checkCollisions() {
+		Rectangle recShip = new Rectangle(spaceShip.getBound());
+		//kolisi ship dan asteroid
+		for(Asteroid astero : asteroid) {
+			Rectangle recAstero = new Rectangle(astero.getBound());
+			if(recShip.intersects(recAstero)) {
+				astero.setVisible(false);
+				spaceShip.getHit();
+				System.out.println(spaceShip.getHealth());
+			}
+			//kolisi asteroid dan missile
+			List<Missile> ms = spaceShip.getMissiles();
+			for(Missile m : ms) {
+				Rectangle recMissile = new Rectangle(m.getBound());
+				if(recMissile.intersects(recAstero)) {
+					astero.setVisible(false);
+					m.setVisible(false);
+				}
+			}
+		}
+		
+		
 	}
 	
 	private class TAdapter extends KeyAdapter{

@@ -30,6 +30,7 @@ public class SpaceShip extends Sprite {
 	public void move() {
 		x+=dx;
 		y+=dy;
+		
 	}
 	
 	public List<Missile> getMissiles(){
@@ -78,6 +79,10 @@ public class SpaceShip extends Sprite {
 		}
 	}
 	
+	public void getHit() {
+		health-=1;
+	}
+	
 	public void fire() {
 		missiles.add(new Missile(x+width/2-6, y-height, -2));
 //		missiles.add(new Missile(x, y-height, -2));
@@ -102,6 +107,5 @@ public class SpaceShip extends Sprite {
 			dy = 0;
 		}
 	}
-	
 	
 }
