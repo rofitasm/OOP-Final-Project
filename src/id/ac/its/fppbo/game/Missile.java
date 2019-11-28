@@ -19,8 +19,8 @@ public class Missile extends Sprite {
 	public void move() {
 		y+=missileSpeed;
 		
-//		if(x>BOARD_WIDTH) {
-//			visible=false;
-//		}
+		if(y==0) {
+			visible=false;
+		}
 	}
 }

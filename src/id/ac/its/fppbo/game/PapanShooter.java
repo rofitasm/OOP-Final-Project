@@ -14,6 +14,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -30,9 +31,12 @@ public class PapanShooter extends JPanel implements ActionListener {
 	private List<Asteroid> asteroid;
 	private int jumlahAsteroid;
 	private boolean inGame = true;
-	//posisi pesawat
+	private Boss boss;
+	//posisi pesawat dan boss
 	private final int PESAWAT_X = 230;
 	private final int PESAWAT_Y = 400;
+	private final int BOSS_X = 230;
+	private final int BOSS_Y = 30;
 	
 	JPanel healthBarPanel;
 	
@@ -47,9 +51,7 @@ public class PapanShooter extends JPanel implements ActionListener {
 		setFocusable(true);
 		
 		spaceShip = new SpaceShip(PESAWAT_X, PESAWAT_Y);
-		healthBarPanel = new JPanel();
-		healthBarPanel.setBounds(10, 10, 100, 15);
-		healthBarPanel.setBackground(Color.BLUE);
+		boss = new Boss(BOSS_X, BOSS_Y);
 		
 		timer = new Timer(DELAY, this);
 		timer.start();
@@ -78,15 +80,27 @@ public class PapanShooter extends JPanel implements ActionListener {
 			jumlahAsteroid /= 10;
 		}
 		//jarak antar asteroid masih belum pas
-		for(int i=0;i<jumlahAsteroid;i++) {
-			asteroid.add(new Asteroid((int)(Math.random() * 6) * 100,150,1));
-			
-		}
-	//		asteroid.add(new Asteroid(100,100,1));
+		randomAsteroid(jumlahAsteroid);
+		//contoh cara menambah asteroid 
+		//asteroid.add(new Asteroid(100,100,1));
 
 	}
 	
-	public List<Asteroid> getAsteroid() {
+	private void randomAsteroid(int size) {
+		ArrayList<Integer> list = new ArrayList<Integer>(6);
+        for(int i = 1; i <= 6; i++) {
+            list.add(i);
+        }
+        
+        Random rand = new Random();
+        for(int i = 0; i < size; i++) {
+            int index = rand.nextInt(list.size());
+            asteroid.add(new Asteroid(list.remove(index) * 100,150,1));
+        }
+        list.clear();
+	}
+	
+	private List<Asteroid> getAsteroid() {
 		return asteroid;
 	}
 	
@@ -108,6 +122,9 @@ public class PapanShooter extends JPanel implements ActionListener {
 		if(spaceShip.isVisible())
 			g2d.drawImage(spaceShip.getImage(), spaceShip.getX(), spaceShip.getY(), this);
 		
+		if(boss.isVisible()) 
+			g2d.drawImage(boss.getImage(), boss.getX(), boss.getY(), this);
+		
 		List<Missile> missiles = spaceShip.getMissiles();
 		
 		for(Missile missile : missiles) {
@@ -122,10 +139,19 @@ public class PapanShooter extends JPanel implements ActionListener {
 				g2d.drawImage(astero.getImage(), astero.getX(), astero.getY(), this);
 		}
 		
+		List<Bullet> bullets = boss.getBullets();
+		
+		for(Bullet bullet : bullets) {
+			if(bullet.isVisible())
+				g2d.drawImage(bullet.getImage(), bullet.getX(), bullet.getY(), this);
+		}
+		
 		g2d.setColor(Color.DARK_GRAY);
 		g2d.fillRect(10, 10, 166, 26);
+		g2d.fillRect(0, 540, 500, 30);
 		g2d.setColor(Color.RED);
 		g2d.fillRect(13,13,20*spaceShip.getHealth(),20);
+		g2d.fillRect(3, 543, 25*boss.getHealth(), 24);
 	}
 	
 	private void drawGameOver(Graphics g) {
@@ -146,6 +172,8 @@ public class PapanShooter extends JPanel implements ActionListener {
 		updateMissiles();
 		updateSpaceShip();
 		updateAsteroid();
+		updateBoss();
+		updateBullets();
 		
 		checkCollisions();
 		
@@ -178,6 +206,9 @@ public class PapanShooter extends JPanel implements ActionListener {
 		for(int i=0;i<asteroids.size();i++) {
 			Asteroid asteroid = asteroids.get(i);
 			
+			if(asteroid.y==0)
+				asteroid.setVisible(false);
+			
 			if(asteroid.isVisible()) {
 				asteroid.move();
 			}else {
@@ -188,6 +219,27 @@ public class PapanShooter extends JPanel implements ActionListener {
 	
 	private void updateSpaceShip() {
 		spaceShip.move();
+	}
+	
+	private void updateBoss() {
+		boss.move();
+	}
+	
+	private void updateBullets() {
+		List<Bullet> bullets = boss.getBullets();
+		
+		for(int i=0;i<bullets.size();i++) {
+			Bullet bullet = bullets.get(i);
+			
+			if(bullet.y==700)
+				bullet.setVisible(false);
+			
+			if(bullet.isVisible()) {
+				bullet.move();
+			}else {
+				bullets.remove(i);
+			}
+		}
 	}
 	
 	private void checkCollisions() {
@@ -219,6 +271,7 @@ public class PapanShooter extends JPanel implements ActionListener {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			spaceShip.keyPressed(e);
+			boss.keyPressed(e);
 		}
 
 		@Override

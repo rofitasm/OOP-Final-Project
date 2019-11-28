@@ -2,7 +2,7 @@ package id.ac.its.fppbo.game;
 
 public class Asteroid extends Sprite {
 	
-	private int BOARD_HEIGHT;
+	private int BOARD_HEIGHT = 600;
 	private int asteroidSpeed;
 	
 	public Asteroid(int x, int y,int asteroidSpeed){
