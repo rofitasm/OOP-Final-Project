@@ -8,7 +8,7 @@ import java.util.List;
 public class SpaceShip extends Sprite {
 	
 	private int dx;
-	private int dy;
+	private int dy; 
 	private List<Missile> missiles;
 	private int health = 3;
 	private int MAX_HEALTH = 8;
@@ -28,9 +28,18 @@ public class SpaceShip extends Sprite {
 	}
 	
 	public void move() {
-		x+=dx;
-		y+=dy;
+		x += dx;
+		y += dy;
+		if(x+width >= 500) 
+			x = 500 - width;
+		else if(x <= 0)
+			x = 0;
 		
+		
+		if(y+height >= 600)
+			y = 600 - height;
+		else if(y <= 200)
+			y = 200;
 	}
 	
 	public List<Missile> getMissiles(){

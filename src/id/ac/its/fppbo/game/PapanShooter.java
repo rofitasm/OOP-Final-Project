@@ -12,7 +12,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Executors;
@@ -38,7 +40,12 @@ public class PapanShooter extends JPanel implements ActionListener {
 	private final int BOSS_X = 230;
 	private final int BOSS_Y = 30;
 	
+	//waktu untuk cooldown
+	public Timer lastMissile;
+	public Timer lastBullet;
+	
 	JPanel healthBarPanel;
+	
 	
 	public PapanShooter() {
 		initBoard();
@@ -175,7 +182,7 @@ public class PapanShooter extends JPanel implements ActionListener {
 		updateBoss();
 		updateBullets();
 		
-		checkCollisions();
+//		checkCollisions();
 		
 		repaint();
 	}
@@ -206,8 +213,8 @@ public class PapanShooter extends JPanel implements ActionListener {
 		for(int i=0;i<asteroids.size();i++) {
 			Asteroid asteroid = asteroids.get(i);
 			
-			if(asteroid.y==0)
-				asteroid.setVisible(false);
+			if(asteroid.y==0);
+//				asteroid.setVisible(false);
 			
 			if(asteroid.isVisible()) {
 				asteroid.move();

@@ -20,7 +20,7 @@ public class Missile extends Sprite {
 		y+=missileSpeed;
 		
 		if(y==0) {
-			visible=false;
+//			visible=false;
 		}
 	}
 }

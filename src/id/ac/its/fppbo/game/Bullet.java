@@ -19,7 +19,7 @@ public class Bullet extends Sprite {
 	public void move() {
 		y+=bulletSpeed;
 		if(y>BOARD_HEIGHT) {
-			visible=false;
+//			visible=false;
 		}
 	}
 	
