@@ -1,4 +1,4 @@
-package id.ac.its.fppbo.game;
+package id.ac.its.fppbo.mazegame;
 
 //import java.awt.Color;
 import java.awt.Graphics;

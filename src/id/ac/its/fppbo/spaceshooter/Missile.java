@@ -1,4 +1,4 @@
-package id.ac.its.fppbo.game;
+package id.ac.its.fppbo.spaceshooter;
 
 public class Missile extends Sprite {
 	
