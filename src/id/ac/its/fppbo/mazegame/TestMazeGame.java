@@ -1,4 +1,4 @@
-package id.ac.its.fppbo.game;
+package id.ac.its.fppbo.mazegame;
 
 import javax.swing.JFrame;
 
@@ -10,7 +10,7 @@ public class TestMazeGame {
 	
 	public TestMazeGame() {
 		JFrame fr = new JFrame();
-		fr.setTitle("NamaGame");
+		fr.setTitle("WaniWanis");
 		fr.add(new MazeGameBoard());
 		fr.setSize(500,600);
 		fr.setVisible(true);
