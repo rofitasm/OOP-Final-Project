@@ -38,6 +38,7 @@ public class Main extends Application{
 		}
 		catch(IOException e) {
 			System.out.println("Couldn't load image");
+			System.out.println("test");
 		}
 		
 		Title title = new Title ("S P A C E");
