@@ -10,7 +10,7 @@ public class TestMazeGame {
 	
 	public TestMazeGame() {
 		JFrame fr = new JFrame();
-		fr.setTitle("NamaGame");
+		fr.setTitle("WaniWanis");
 		fr.add(new MazeGameBoard());
 		fr.setSize(500,600);
 		fr.setVisible(true);

@@ -13,18 +13,27 @@ public class MapMazeGame {
 	private String Map[] = new String[18]; 
 	
 	private Image grass,
-				  wall; 
+				  wall,
+				  finish; 
 	
 	public MapMazeGame() {
 		
 		ImageIcon img = new ImageIcon("src/resource/MazeGame/grass.png");
 		grass = img.getImage();
+		grass = grass.getScaledInstance(25, 25, Image.SCALE_DEFAULT);
 		img = new ImageIcon("src/resource/MazeGame/wall.png"); 
 		wall = img.getImage();
-		
+		wall = wall.getScaledInstance(25, 25, Image.SCALE_DEFAULT);
+		img = new ImageIcon("src/resource/MazeGame/door5.png"); 
+		finish = img.getImage();
+		finish = finish.getScaledInstance(25, 25, Image.SCALE_DEFAULT);
 		openFile();
 		readFile();
 		closeFile();
+	}
+	
+	public Image getFinish() {
+		return finish;
 	}
 	
 	public Image getGrass() {
