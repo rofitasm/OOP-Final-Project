@@ -20,6 +20,11 @@ public class Sprite {
 		visible = true;
 	}
 	
+	protected void setLoc(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
 	protected void loadImage(String imageName) {
 		ImageIcon ii = new ImageIcon(imageName);
 		image = ii.getImage();

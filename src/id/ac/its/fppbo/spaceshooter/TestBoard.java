@@ -13,12 +13,11 @@ public class TestBoard extends JFrame {
 	private void initUI() {
 		add(new PapanShooter());
 		
-		setTitle("Test Board");    
+		setTitle("Test Board");
 		setSize(500,600);
 		
 		setLocationRelativeTo(null);
 		setResizable(false);
-		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	

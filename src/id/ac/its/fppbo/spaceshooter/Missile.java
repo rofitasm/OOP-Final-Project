@@ -11,6 +11,13 @@ public class Missile extends Sprite {
 		initMissile();
 	}
 	
+	@Override
+	protected void setLoc(int x, int y) {
+		// TODO Auto-generated method stub
+		super.setLoc(x, y);
+		missileSpeed = 0;
+	}
+
 	private void initMissile() {
 		loadImage("src/resource/SpaceShip/missile.png");
 		getImageDimension();
@@ -19,8 +26,8 @@ public class Missile extends Sprite {
 	public void move() {
 		y+=missileSpeed;
 		
-		if(y==0) {
-//			visible=false;
+		if(y==-10) {
+			visible=false;
 		}
 	}
 }

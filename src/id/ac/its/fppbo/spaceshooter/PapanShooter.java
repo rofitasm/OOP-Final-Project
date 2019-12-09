@@ -212,8 +212,8 @@ public class PapanShooter extends JPanel implements ActionListener {
 			if(missiles[i].isVisible()) {
 				missile.move();
 			}else {
-//				missiles.remove(i);
-//				relocateMissiles();
+//				missiles.remove(i); 
+				missile.setLoc(0, 700);
 			}
 		}
 	}
@@ -231,7 +231,7 @@ public class PapanShooter extends JPanel implements ActionListener {
 				asteroid.move();
 			}else {
 //				asteroids.remove(i);
-//				relocateAsteroid();
+				asteroid.setLoc(0, 700);
 			}
 		}
 	}
@@ -256,7 +256,7 @@ public class PapanShooter extends JPanel implements ActionListener {
 			if(bullet.isVisible()) {
 				bullet.move();
 			}else {
-				bullets.remove(i);
+				bullet.setLoc(0, 700);
 			}
 		}
 	}

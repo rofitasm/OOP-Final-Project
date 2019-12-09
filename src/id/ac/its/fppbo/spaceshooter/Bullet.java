@@ -11,6 +11,13 @@ public class Bullet extends Sprite {
 		initBullet();
 	}
 	
+	@Override
+	protected void setLoc(int x, int y) {
+		// TODO Auto-generated method stub
+		super.setLoc(x, y);
+		bulletSpeed = 0;
+	}
+
 	private void initBullet() {
 		loadImage("src/resource/SpaceShip/bullet.png");
 		getImageDimension();
@@ -19,7 +26,7 @@ public class Bullet extends Sprite {
 	public void move() {
 		y+=bulletSpeed;
 		if(y>BOARD_HEIGHT) {
-//			visible=false;
+			visible=false;
 		}
 	}
 	

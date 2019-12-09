@@ -12,6 +12,13 @@ public class Asteroid extends Sprite {
 		initAsteroid();
 	}
 	
+	@Override
+	protected void setLoc(int x, int y) {
+		// TODO Auto-generated method stub
+		super.setLoc(x, y);
+		asteroidSpeed = 0;
+	}
+
 	private void initAsteroid() {
 		loadImage("src/resource/SpaceShip/asteroid.png");
 		getImageDimension();
@@ -19,6 +26,9 @@ public class Asteroid extends Sprite {
 	
 	public void move() {
 		y+=asteroidSpeed;
+		
+		if(y>BOARD_HEIGHT)
+			visible = false;
 	}
 	
 }
