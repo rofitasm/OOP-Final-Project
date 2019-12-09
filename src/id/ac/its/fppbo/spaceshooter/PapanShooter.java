@@ -30,19 +30,19 @@ public class PapanShooter extends JPanel implements ActionListener {
 	private Timer timer;
 	private SpaceShip spaceShip;
 	private final int DELAY = 10;
-	private List<Asteroid> asteroid;
+	private Asteroid[] asteroids;
 	private int jumlahAsteroid;
 	private boolean inGame = true;
 	private Boss boss;
+	
+	private static int asteroidCount = 0;
+	private static int bulletCount = 0;
 	//posisi pesawat dan boss
 	private final int PESAWAT_X = 230;
 	private final int PESAWAT_Y = 400;
 	private final int BOSS_X = 230;
 	private final int BOSS_Y = 30;
 	
-	//waktu untuk cooldown
-	public Timer lastMissile;
-	public Timer lastBullet;
 	
 	JPanel healthBarPanel;
 	
@@ -65,7 +65,14 @@ public class PapanShooter extends JPanel implements ActionListener {
 	}
 	
 	private void initAsteroidWall() {
-		asteroid = new ArrayList<>();
+//		asteroid = new ArrayList<>();
+		asteroids = new Asteroid[40];
+		if(asteroidCount==0) {
+			for(int i = 0;i < 40;i++) {
+				if(asteroids[i] == null)
+					asteroids[i] = new Asteroid(0, 0, 0);
+			}
+		}
 		//mengeluarkan asteroid setiap detik
 		final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 	    executorService.scheduleAtFixedRate(new Runnable() {
@@ -87,13 +94,14 @@ public class PapanShooter extends JPanel implements ActionListener {
 			jumlahAsteroid /= 10;
 		}
 		//jarak antar asteroid masih belum pas
-		randomAsteroid(jumlahAsteroid);
+		asteroidCount = randomAsteroid(jumlahAsteroid, asteroidCount);
 		//contoh cara menambah asteroid 
 		//asteroid.add(new Asteroid(100,100,1));
 
 	}
 	
-	private void randomAsteroid(int size) {
+	private int randomAsteroid(int size, int count) {
+		System.out.println(size);
 		ArrayList<Integer> list = new ArrayList<Integer>(6);
         for(int i = 1; i <= 6; i++) {
             list.add(i);
@@ -102,16 +110,18 @@ public class PapanShooter extends JPanel implements ActionListener {
         Random rand = new Random();
         for(int i = 0; i < size; i++) {
             int index = rand.nextInt(list.size());
-            asteroid.add(new Asteroid(list.remove(index) * 100,150,1));
+//            asteroid.add(new Asteroid(list.remove(index) * 100,150,1));
+            asteroids[count++%40] = new Asteroid(list.remove(index) * 100,150,1);
         }
         list.clear();
+        return count;
 	}
 	
-	private List<Asteroid> getAsteroid() {
-		return asteroid;
+	private Asteroid[] getAsteroid() {
+		return asteroids;
 	}
 	
-	@Override
+	@Override 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
@@ -132,14 +142,14 @@ public class PapanShooter extends JPanel implements ActionListener {
 		if(boss.isVisible()) 
 			g2d.drawImage(boss.getImage(), boss.getX(), boss.getY(), this);
 		
-		List<Missile> missiles = spaceShip.getMissiles();
+		Missile[] missiles = spaceShip.getMissiles();
 		
-		for(Missile missile : missiles) {
-			if(missile.isVisible())
-				g2d.drawImage(missile.getImage(), missile.getX(), missile.getY(), this);
+		for(int i = 0;i < 20; i++) {
+			if(missiles[i].isVisible())
+				g2d.drawImage(missiles[i].getImage(), missiles[i].getX(), missiles[i].getY(), this);
 		}
 		
-		List<Asteroid> asteroids = getAsteroid();
+		Asteroid[] asteroids = getAsteroid();
 		
 		for(Asteroid astero : asteroids) {
 			if(astero.isVisible())
@@ -194,24 +204,25 @@ public class PapanShooter extends JPanel implements ActionListener {
 	}
 	
 	private void updateMissiles() {
-		List<Missile> missiles = spaceShip.getMissiles();
+		Missile[] missiles = spaceShip.getMissiles();
 		
-		for(int i = 0; i< missiles.size(); i++) {
-			Missile missile = missiles.get(i);
+		for(int i = 0; i< 20; i++) {
+			Missile missile = missiles[i];
 			
-			if(missile.isVisible()) {
+			if(missiles[i].isVisible()) {
 				missile.move();
 			}else {
-				missiles.remove(i);
+//				missiles.remove(i);
+//				relocateMissiles();
 			}
 		}
 	}
 	
 	private void updateAsteroid() {
-		List<Asteroid> asteroids = getAsteroid();
+		Asteroid[] asteroids = getAsteroid();
 		
-		for(int i=0;i<asteroids.size();i++) {
-			Asteroid asteroid = asteroids.get(i);
+		for(int i=0;i < 40;i++) {
+			Asteroid asteroid = asteroids[i];
 			
 			if(asteroid.y==0);
 //				asteroid.setVisible(false);
@@ -219,7 +230,8 @@ public class PapanShooter extends JPanel implements ActionListener {
 			if(asteroid.isVisible()) {
 				asteroid.move();
 			}else {
-				asteroids.remove(i);
+//				asteroids.remove(i);
+//				relocateAsteroid();
 			}
 		}
 	}
@@ -252,7 +264,7 @@ public class PapanShooter extends JPanel implements ActionListener {
 	private void checkCollisions() {
 		Rectangle recShip = new Rectangle(spaceShip.getBound());
 		//kolisi ship dan asteroid
-		for(Asteroid astero : asteroid) {
+		for(Asteroid astero : asteroids) {
 			Rectangle recAstero = new Rectangle(astero.getBound());
 			if(recShip.intersects(recAstero)) {
 				astero.setVisible(false);
@@ -260,7 +272,7 @@ public class PapanShooter extends JPanel implements ActionListener {
 				System.out.println(spaceShip.getHealth());
 			}
 			//kolisi asteroid dan missile
-			List<Missile> ms = spaceShip.getMissiles();
+			Missile[] ms = spaceShip.getMissiles();
 			for(Missile m : ms) {
 				Rectangle recMissile = new Rectangle(m.getBound());
 				if(recMissile.intersects(recAstero)) {

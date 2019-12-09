@@ -9,6 +9,9 @@ public class Boss extends Sprite {
 	private List<Bullet> bullets;
 	private int health = 20;
 	private int MAX_HEALTH = 20;
+
+	//waktu untuk cooldown
+	public long lastBullet = 0;
 	
 	public Boss(int x, int y) {
 		super(x, y);
@@ -60,7 +63,11 @@ public class Boss extends Sprite {
 		int key = e.getKeyCode();
 		
 		if(key == KeyEvent.VK_M) {
-			fire();
+			long now = System.currentTimeMillis();
+			if(now - lastBullet > 500) {
+				fire();
+				lastBullet = now;
+			}
 		}
 		
 		if(key == KeyEvent.VK_B) {

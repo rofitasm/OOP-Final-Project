@@ -9,9 +9,12 @@ public class SpaceShip extends Sprite {
 	
 	private int dx;
 	private int dy; 
-	private List<Missile> missiles;
+//	private List<Missile> missiles;
+	private Missile[] missiles;
 	private int health = 3;
 	private int MAX_HEALTH = 8;
+	public long lastMissile = 0;
+	private static int missileCount = 0;
 	
 	public SpaceShip(int x, int y) {
 		super(x,y);
@@ -20,7 +23,13 @@ public class SpaceShip extends Sprite {
 	}
 	
 	private void initSpaceShip() {
-		missiles = new ArrayList<>();
+		missiles = new Missile[20];
+		if(missileCount==0) {
+			for(int i = 0;i < 20;i++) {
+				if(missiles[i] == null)
+					missiles[i] = new Missile(0,0,0);
+			}
+		}
 		
 		loadImage("src/resource/SpaceShip/pesawat.png");
 		getImageDimension();
@@ -42,7 +51,7 @@ public class SpaceShip extends Sprite {
 			y = 200;
 	}
 	
-	public List<Missile> getMissiles(){
+	public Missile[] getMissiles(){
 		return missiles;
 	}
 	
@@ -74,7 +83,11 @@ public class SpaceShip extends Sprite {
 		}
 		
 		if(key == KeyEvent.VK_SPACE) {
-			fire();
+			long now = System.currentTimeMillis();
+			if(now - lastMissile > 300) {
+				missileCount = fire(missileCount);
+				lastMissile = now; 
+			}
 		}
 		//test hp
 		if(key == KeyEvent.VK_C) {
@@ -92,8 +105,11 @@ public class SpaceShip extends Sprite {
 		health-=1;
 	}
 	
-	public void fire() {
-		missiles.add(new Missile(x+width/2-6, y-height, -2));
+	public int fire(int count) {
+//		missiles.add(new Missile(x+width/2-6, y-height, -2));
+		missiles[count++%20] = new Missile(x+width/2-6, y-height, -2);
+		return count;
+		
 //		missiles.add(new Missile(x, y-height, -2));
 	}
 	
