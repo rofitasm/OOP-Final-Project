@@ -70,7 +70,7 @@ public class PapanShooter extends JPanel implements ActionListener {
 		if(asteroidCount==0) {
 			for(int i = 0;i < 40;i++) {
 				if(asteroids[i] == null)
-					asteroids[i] = new Asteroid(0, 0, 0);
+					asteroids[i] = new Asteroid(0, 700, 0);
 			}
 		}
 		//mengeluarkan asteroid setiap detik
@@ -156,11 +156,12 @@ public class PapanShooter extends JPanel implements ActionListener {
 				g2d.drawImage(astero.getImage(), astero.getX(), astero.getY(), this);
 		}
 		
-		List<Bullet> bullets = boss.getBullets();
+//		List<Bullet> bullets = boss.getBullets();
+		Bullet[] bullet = boss.getBullets();
 		
-		for(Bullet bullet : bullets) {
-			if(bullet.isVisible())
-				g2d.drawImage(bullet.getImage(), bullet.getX(), bullet.getY(), this);
+		for(int i = 0; i < 20; i++) {
+			if(bullet[i].isVisible())
+				g2d.drawImage(bullet[i].getImage(), bullet[i].getX(), bullet[i].getY(), this);
 		}
 		
 		g2d.setColor(Color.DARK_GRAY);
@@ -192,7 +193,7 @@ public class PapanShooter extends JPanel implements ActionListener {
 		updateBoss();
 		updateBullets();
 		
-//		checkCollisions();
+		checkCollisions();
 		
 		repaint();
 	}
@@ -209,6 +210,10 @@ public class PapanShooter extends JPanel implements ActionListener {
 		for(int i = 0; i< 20; i++) {
 			Missile missile = missiles[i];
 			
+			if(missile.y<=-10 && missile.isVisible()) {
+				missile.setVisible(false);;
+			}
+			
 			if(missiles[i].isVisible()) {
 				missile.move();
 			}else {
@@ -224,8 +229,8 @@ public class PapanShooter extends JPanel implements ActionListener {
 		for(int i=0;i < 40;i++) {
 			Asteroid asteroid = asteroids[i];
 			
-			if(asteroid.y==0);
-//				asteroid.setVisible(false);
+//			if(asteroid.y>=600 && asteroid.isVisible());
+//				asteroid.setVisible(false);;
 			
 			if(asteroid.isVisible()) {
 				asteroid.move();
@@ -245,12 +250,12 @@ public class PapanShooter extends JPanel implements ActionListener {
 	}
 	
 	private void updateBullets() {
-		List<Bullet> bullets = boss.getBullets();
+		Bullet[] bullets = boss.getBullets();
 		
-		for(int i=0;i<bullets.size();i++) {
-			Bullet bullet = bullets.get(i);
+		for(int i = 0; i < 20 ;i++) {
+			Bullet bullet = bullets[i];
 			
-			if(bullet.y==700)
+			if(bullet.y>=600 && bullet.isVisible())
 				bullet.setVisible(false);
 			
 			if(bullet.isVisible()) {
@@ -263,22 +268,32 @@ public class PapanShooter extends JPanel implements ActionListener {
 	
 	private void checkCollisions() {
 		Rectangle recShip = new Rectangle(spaceShip.getBound());
+		Rectangle recBoss = new Rectangle(boss.getBound());
+		Missile[] ms = spaceShip.getMissiles();
+		Asteroid[] astero = getAsteroid();
 		//kolisi ship dan asteroid
-		for(Asteroid astero : asteroids) {
-			Rectangle recAstero = new Rectangle(astero.getBound());
-			if(recShip.intersects(recAstero)) {
-				astero.setVisible(false);
+		for(int i = 0; i < 40; i++) {
+			Rectangle recAstero = new Rectangle(astero[i].getBound());
+			if(recShip.intersects(recAstero) && astero[i].isVisible()) {
+				astero[i].setVisible(false);
 				spaceShip.getHit();
 				System.out.println(spaceShip.getHealth());
 			}
 			//kolisi asteroid dan missile
-			Missile[] ms = spaceShip.getMissiles();
-			for(Missile m : ms) {
-				Rectangle recMissile = new Rectangle(m.getBound());
-				if(recMissile.intersects(recAstero)) {
-					astero.setVisible(false);
-					m.setVisible(false);
+			for(int j = 0; j < 20; j++) {
+				Rectangle recMissile = new Rectangle(ms[j].getBound());
+				if(recMissile.intersects(recAstero) && ms[j].isVisible() && astero[i].isVisible()) {
+					astero[i].setVisible(false);
+					ms[j].setVisible(false);
 				}
+			}
+		}
+		for(int i = 0; i< 20; i++) {
+			Rectangle recMissile = new Rectangle(ms[i].getBound());
+			if(recMissile.intersects(recBoss) && ms[i].isVisible()) {
+				ms[i].setVisible(false);
+//				invulerable frame after getting hit(belum diimplementasi)
+				boss.getHit();
 			}
 		}
 		

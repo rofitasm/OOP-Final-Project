@@ -6,9 +6,10 @@ import java.util.List;
 
 public class Boss extends Sprite {
 	private int dx = 1;
-	private List<Bullet> bullets;
+	private Bullet[] bullets;
 	private int health = 20;
 	private int MAX_HEALTH = 20;
+	private static int bulletCount = 0;
 
 	//waktu untuk cooldown
 	public long lastBullet = 0;
@@ -27,7 +28,13 @@ public class Boss extends Sprite {
 	}
 	
 	private void initBossBullet() {
-		bullets = new ArrayList<>();
+		bullets = new Bullet[20];
+		if(bulletCount == 0) {
+			for(int i = 0; i < 20 ; i++) {
+				if(bullets[i] == null)
+					bullets[i] = new Bullet(0, 900, 0);
+			}
+		}
 	}
 	
 	public void move() {
@@ -46,7 +53,7 @@ public class Boss extends Sprite {
 		return health;
 	}
 	
-	public List<Bullet> getBullets(){
+	public Bullet[] getBullets(){
 		return bullets;
 	}
 	
@@ -54,8 +61,10 @@ public class Boss extends Sprite {
 		health-=1;
 	}
 	
-	public void fire() {
-		bullets.add(new Bullet(x+width/2-6, y+height, 1));
+	public int fire(int count) {
+		bullets[count++%20] = new Bullet(x+width/2-6, y+height, 1);
+//		bullets.add(new Bullet(x+width/2-6, y+height, 1));
+		return count;
 	}
 	
 	//untuk test
@@ -65,7 +74,7 @@ public class Boss extends Sprite {
 		if(key == KeyEvent.VK_M) {
 			long now = System.currentTimeMillis();
 			if(now - lastBullet > 500) {
-				fire();
+				bulletCount = fire(bulletCount);
 				lastBullet = now;
 			}
 		}

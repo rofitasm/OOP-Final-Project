@@ -27,7 +27,7 @@ public class SpaceShip extends Sprite {
 		if(missileCount==0) {
 			for(int i = 0;i < 20;i++) {
 				if(missiles[i] == null)
-					missiles[i] = new Missile(0,0,0);
+					missiles[i] = new Missile(0,800,0);
 			}
 		}
 		

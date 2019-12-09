@@ -27,8 +27,6 @@ public class Asteroid extends Sprite {
 	public void move() {
 		y+=asteroidSpeed;
 		
-		if(y>BOARD_HEIGHT)
-			visible = false;
 	}
 	
 }
