@@ -136,6 +136,10 @@ public class PapanShooter extends JPanel implements ActionListener {
 	
 	private void doDrawing(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
+		
+		if(!inGame) 
+			drawGameOver(g);
+		
 		if(spaceShip.isVisible())
 			g2d.drawImage(spaceShip.getImage(), spaceShip.getX(), spaceShip.getY(), this);
 		
@@ -229,8 +233,8 @@ public class PapanShooter extends JPanel implements ActionListener {
 		for(int i=0;i < 40;i++) {
 			Asteroid asteroid = asteroids[i];
 			
-//			if(asteroid.y>=600 && asteroid.isVisible());
-//				asteroid.setVisible(false);;
+			if(asteroid.y>=600 && asteroid.isVisible())
+				asteroid.setVisible(false);
 			
 			if(asteroid.isVisible()) {
 				asteroid.move();
@@ -243,10 +247,15 @@ public class PapanShooter extends JPanel implements ActionListener {
 	
 	private void updateSpaceShip() {
 		spaceShip.move();
+		if(spaceShip.getHealth()==0)
+			inGame = false;
 	}
 	
 	private void updateBoss() {
 		boss.move();
+		if(boss.getHealth()==0)
+			inGame = false;
+		
 	}
 	
 	private void updateBullets() {
