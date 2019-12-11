@@ -56,7 +56,13 @@ public class Main {
 	    }
 	});
 	JButton quitbutton = new JButton("Quit");
-	JLabel label = new JLabel();;
+	quitbutton.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+	        System.exit(1);
+	    }
+	});
+	JLabel label = new JLabel();
 	panel.setBackground(Color.WHITE);
 	
 	panel.add(playbutton);
