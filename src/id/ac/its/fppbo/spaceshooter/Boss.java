@@ -11,8 +11,6 @@ public class Boss extends Sprite {
 	private int MAX_HEALTH = 20;
 	private static int bulletCount = 0;
 
-	//waktu untuk cooldown
-	public long lastBullet = 0;
 	
 	public Boss(int x, int y) {
 		super(x, y);
@@ -62,31 +60,23 @@ public class Boss extends Sprite {
 	}
 	
 	public int fire(int count) {
-		bullets[count++%20] = new Bullet(x+width/2-6, y+height, 1);
+		bullets[count++%20] = new Bullet(x+width/2-15, y+height, 1);
 //		bullets.add(new Bullet(x+width/2-6, y+height, 1));
 		return count;
 	}
 	
-	//untuk test
-	public void keyPressed(KeyEvent e) {
-		int key = e.getKeyCode();
-		
-		if(key == KeyEvent.VK_M) {
-			long now = System.currentTimeMillis();
-			if(now - lastBullet > 500) {
-				bulletCount = fire(bulletCount);
-				lastBullet = now;
-			}
-		}
-		
-		if(key == KeyEvent.VK_B) {
-			health-=1;
-		}
-		
-		if(key == KeyEvent.VK_N) {
-			health+=1;
-		}
-	}
+//	//untuk test
+//	public void keyPressed(KeyEvent e) {
+//		int key = e.getKeyCode();
+//		
+//		if(key == KeyEvent.VK_M) {
+//			long now = System.currentTimeMillis();
+//			if(now - lastBullet > 500) {
+//				bulletCount = fire(bulletCount);
+//				lastBullet = now;
+//			}
+//		}
+//	}
 	
 	
 		

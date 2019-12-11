@@ -99,16 +99,6 @@ public class SpaceShip extends Sprite {
 				System.out.println("Peluru Habis~!");
 			}
 		}
-		//test hp
-		if(key == KeyEvent.VK_C) {
-			health-=1;
-			System.out.println(health);
-		}
-		
-		if(key == KeyEvent.VK_V) {
-			health+=1;
-			System.out.println(health);
-		}
 	}
 	
 	public int getJumlahPeluru() {

@@ -4,6 +4,8 @@ public class Bullet extends Sprite {
 
 	private int BOARD_HEIGHT = 600;
 	private int bulletSpeed;
+	private int dxb;
+	private int arah;
 	
 	public Bullet(int x, int y, int speed) {
 		super(x,y);
@@ -21,11 +23,17 @@ public class Bullet extends Sprite {
 	private void initBullet() {
 		loadImage("src/resource/SpaceShip/bullet.png");
 		getImageDimension();
+		arah = (int)(Math.random() * 2);
 	}
 	
 	public void move() {
 		y+=bulletSpeed;
-		if(y>BOARD_HEIGHT) {
+		if(arah == 0)
+			dxb=1;
+		else
+			dxb=-1;
+		x+=dxb;
+		if(y>=700) {
 			visible=false;
 		}
 	}

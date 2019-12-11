@@ -4,12 +4,16 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import id.ac.its.fppbo.mazegame.TestMazeGame;
 
 
 public class Main {
@@ -24,11 +28,11 @@ public class Main {
 
 	JFrame frame = new JFrame();
 	frame.setSize(500, 600);
-	
+	frame.setLocationRelativeTo(null);
 	JPanel panel2 = new JPanel();
 	ImageIcon img = new ImageIcon("src/id/ac/its/fppbo/player.png");
 	image = img.getImage();
-	image = image.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
+	image = image.getScaledInstance(500, 600, Image.SCALE_DEFAULT);
 	JLabel label1 = new JLabel(img);
 	frame.add(label1);
 	
@@ -44,6 +48,13 @@ public class Main {
 	
 	JPanel panel = new JPanel();
 	JButton playbutton = new JButton("Play");
+	playbutton.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+	        new TestMazeGame();
+	        frame.dispose();
+	    }
+	});
 	JButton quitbutton = new JButton("Quit");
 	JLabel label = new JLabel();;
 	panel.setBackground(Color.WHITE);

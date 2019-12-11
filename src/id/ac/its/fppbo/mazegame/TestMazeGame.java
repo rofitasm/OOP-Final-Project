@@ -4,9 +4,9 @@ import javax.swing.JFrame;
 
 
 public class TestMazeGame {
-	public static void main (String[] args) {
-		new TestMazeGame();
-	}
+//	public static void main (String[] args) {
+//		new TestMazeGame();
+//	}
 	
 	public TestMazeGame() {
 		JFrame fr = new JFrame();

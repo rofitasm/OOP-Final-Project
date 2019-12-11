@@ -25,12 +25,12 @@ public class TestBoard extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(() -> {
-//			TestBoard tb = new TestBoard();
-//			tb.setVisible(true);
-//		});
-//		System.out.println("lele");
-//	}
+	public static void main(String[] args) {
+		EventQueue.invokeLater(() -> {
+			TestBoard tb = new TestBoard();
+			tb.setVisible(true);
+		});
+		System.out.println("lele");
+	}
 	
 }

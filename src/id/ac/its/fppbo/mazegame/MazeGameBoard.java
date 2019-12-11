@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import id.ac.its.fppbo.spaceshooter.TestBoard;
-
+import id.ac.its.fppbo.mazegame.TestMazeGame;
 
 
 public class MazeGameBoard extends JPanel implements  ActionListener{
@@ -57,17 +57,17 @@ public class MazeGameBoard extends JPanel implements  ActionListener{
 			for(int y = 0; y<18; y++) {
 				for(int x=0; x<18; x++) {
 					if(m.getMap(x,y).equals("f")) {
-						g.drawImage(m.getFinish(), x*25, y*25, null);
+						g.drawImage(m.getFinish(), x*30, y*30, null);
 					}
 					if(m.getMap(x,y).equals("o")) {
-						g.drawImage(m.getGrass(), x*25, y*25, null);
+						g.drawImage(m.getGrass(), x*30, y*30, null);
 					}
 					if(m.getMap(x,y).equals("x")) {
-						g.drawImage(m.getWall(), x*25 , y*25, null);
+						g.drawImage(m.getWall(), x*30 , y*30, null);
 						}
 					}
 				}	
-			g.drawImage(p.getPlayer(), p.getTileX()*25, p.getTileY()*25, null);
+			g.drawImage(p.getPlayer(), p.getTileX()*30, p.getTileY()*30, null);
 			
 	}else {
 		g.setColor(Color.ORANGE);

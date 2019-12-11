@@ -68,6 +68,14 @@ public class PapanShooter extends JPanel implements ActionListener {
 		
 		timer = new Timer(DELAY, this);
 		timer.start();
+
+		final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+	    executorService.scheduleAtFixedRate(new Runnable() {
+	        @Override          
+	        public void run() {
+	        	bulletCount = boss.fire(bulletCount);
+	        }
+	    }, 0, 10, TimeUnit.SECONDS);
 	}
 	
 	private void initItem() {
@@ -396,7 +404,6 @@ public class PapanShooter extends JPanel implements ActionListener {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			spaceShip.keyPressed(e);
-			boss.keyPressed(e);
 		}
 
 		@Override

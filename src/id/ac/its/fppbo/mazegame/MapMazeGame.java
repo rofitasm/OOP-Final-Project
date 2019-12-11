@@ -20,13 +20,13 @@ public class MapMazeGame {
 		
 		ImageIcon img = new ImageIcon("src/resource/MazeGame/grass.png");
 		grass = img.getImage();
-		grass = grass.getScaledInstance(25, 25, Image.SCALE_DEFAULT);
+		grass = grass.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
 		img = new ImageIcon("src/resource/MazeGame/wall.png"); 
 		wall = img.getImage();
-		wall = wall.getScaledInstance(25, 25, Image.SCALE_DEFAULT);
+		wall = wall.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
 		img = new ImageIcon("src/resource/MazeGame/door5.png"); 
 		finish = img.getImage();
-		finish = finish.getScaledInstance(25, 25, Image.SCALE_DEFAULT);
+		finish = finish.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
 		openFile();
 		readFile();
 		closeFile();
