@@ -52,6 +52,10 @@ public class SpaceShip extends Sprite {
 			y = 200;
 	}
 	
+	public void addMissile() {
+		jumlahPeluru += 10;
+	}
+	
 	public Missile[] getMissiles(){
 		return missiles;
 	}

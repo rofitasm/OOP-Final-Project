@@ -31,12 +31,15 @@ public class PapanShooter extends JPanel implements ActionListener {
 	private SpaceShip spaceShip;
 	private final int DELAY = 10;
 	private Asteroid[] asteroids;
+	private RandomItems[] items;
 	private int jumlahAsteroid;
 	private boolean inGame = true;
 	private Boss boss;
 	
 	private static int asteroidCount = 0;
 	private static int bulletCount = 0;
+	private static int itemCount = 0;
+	
 	//posisi pesawat dan boss
 	private final int PESAWAT_X = 230;
 	private final int PESAWAT_Y = 400;
@@ -50,6 +53,7 @@ public class PapanShooter extends JPanel implements ActionListener {
 	public PapanShooter() {
 		initBoard();
 		initAsteroidWall();
+		initItem();
 	}
 	
 	private void initBoard() {
@@ -64,8 +68,26 @@ public class PapanShooter extends JPanel implements ActionListener {
 		timer.start();
 	}
 	
+	private void initItem() {
+		items = new RandomItems[10];
+		if(itemCount==0) {
+			for(int i = 0;i<10;i++) {
+				if(items[i] == null) {
+					items[i] = new RandomItems(0, 900, 0);
+				}
+			}
+		}
+		//mengeluarkan item setiap 3 detik
+				final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+			    executorService.scheduleAtFixedRate(new Runnable() {
+			        @Override          
+			        public void run() {
+			        	initRandomItem();
+			        }
+			    }, 3, 3, TimeUnit.SECONDS);
+	}
+	
 	private void initAsteroidWall() {
-//		asteroid = new ArrayList<>();
 		asteroids = new Asteroid[40];
 		if(asteroidCount==0) {
 			for(int i = 0;i < 40;i++) {
@@ -85,7 +107,9 @@ public class PapanShooter extends JPanel implements ActionListener {
 	
 	private void initAsteroid() {
 		jumlahAsteroid = (int)(Math.random() * ((66 - 10) + 1)) + 10;
-		if(jumlahAsteroid%10 == jumlahAsteroid) {
+		if(jumlahAsteroid == 13 || jumlahAsteroid == 39)
+			jumlahAsteroid = 7;
+		else if(jumlahAsteroid%10 == jumlahAsteroid) {
 			if(jumlahAsteroid%10<=3)
 				jumlahAsteroid = 1;
 			else
@@ -97,13 +121,16 @@ public class PapanShooter extends JPanel implements ActionListener {
 		asteroidCount = randomAsteroid(jumlahAsteroid, asteroidCount);
 		//contoh cara menambah asteroid 
 		//asteroid.add(new Asteroid(100,100,1));
+	}
 
+	private void initRandomItem() {
+		int posisiItem = (int)(Math.random() * 6);
+		items[itemCount++%10] = new RandomItems(posisiItem * 100 ,150,2); 
 	}
 	
 	private int randomAsteroid(int size, int count) {
-		System.out.println(size);
-		ArrayList<Integer> list = new ArrayList<Integer>(6);
-        for(int i = 1; i <= 6; i++) {
+		ArrayList<Integer> list = new ArrayList<Integer>(11);
+        for(int i = 0; i <= 10; i++) {
             list.add(i);
         }
         
@@ -111,7 +138,7 @@ public class PapanShooter extends JPanel implements ActionListener {
         for(int i = 0; i < size; i++) {
             int index = rand.nextInt(list.size());
 //            asteroid.add(new Asteroid(list.remove(index) * 100,150,1));
-            asteroids[count++%40] = new Asteroid(list.remove(index) * 100,150,1);
+            asteroids[count++%40] = new Asteroid(list.remove(index) * 45 ,150,1);
         }
         list.clear();
         return count;
@@ -119,6 +146,10 @@ public class PapanShooter extends JPanel implements ActionListener {
 	
 	private Asteroid[] getAsteroid() {
 		return asteroids;
+	}
+	
+	private RandomItems[] getItems() {
+		return items;
 	}
 	
 	@Override 
@@ -160,12 +191,18 @@ public class PapanShooter extends JPanel implements ActionListener {
 				g2d.drawImage(astero.getImage(), astero.getX(), astero.getY(), this);
 		}
 		
-//		List<Bullet> bullets = boss.getBullets();
 		Bullet[] bullet = boss.getBullets();
 		
 		for(int i = 0; i < 20; i++) {
 			if(bullet[i].isVisible())
 				g2d.drawImage(bullet[i].getImage(), bullet[i].getX(), bullet[i].getY(), this);
+		}
+		
+		RandomItems[] item = getItems();
+		
+		for(int i = 0;i < 10; i++) {
+			if(item[i].isVisible())
+				g2d.drawImage(item[i].getImage(), item[i].getX(), item[i].getY(), this);
 		}
 		
 		g2d.setColor(Color.DARK_GRAY);
@@ -174,6 +211,15 @@ public class PapanShooter extends JPanel implements ActionListener {
 		g2d.setColor(Color.RED);
 		g2d.fillRect(13,13,20*spaceShip.getHealth(),20);
 		g2d.fillRect(3, 543, 25*boss.getHealth(), 24);
+		
+		String jumlahMissile = "X " + spaceShip.getJumlahPeluru();
+		Font small = new Font("Helvetica", Font.BOLD, 20);
+		FontMetrics fm = getFontMetrics(small);
+		
+		g2d.drawImage(missiles[0].getImage(), 380, 6, this);
+		g2d.setColor(Color.white);
+		g2d.setFont(small);
+		g2d.drawString(jumlahMissile, 400, 25);
 	}
 	
 	private void drawGameOver(Graphics g) {
@@ -196,6 +242,7 @@ public class PapanShooter extends JPanel implements ActionListener {
 		updateAsteroid();
 		updateBoss();
 		updateBullets();
+		updateItems();
 		
 		checkCollisions();
 		
@@ -245,6 +292,23 @@ public class PapanShooter extends JPanel implements ActionListener {
 		}
 	}
 	
+	private void updateItems() {
+		RandomItems[] items = getItems();
+		
+		for(int i = 0;i < 10; i++) {
+			RandomItems item = items[i];
+			
+			if(item.y>=600 && item.isVisible())
+				item.setVisible(false);
+			
+			if(item.isVisible()) {
+				item.move();
+			}else {
+				item.setLoc(0, 900);
+			}
+		}
+	}
+	
 	private void updateSpaceShip() {
 		spaceShip.move();
 		if(spaceShip.getHealth()==0)
@@ -280,6 +344,7 @@ public class PapanShooter extends JPanel implements ActionListener {
 		Rectangle recBoss = new Rectangle(boss.getBound());
 		Missile[] ms = spaceShip.getMissiles();
 		Asteroid[] astero = getAsteroid();
+		RandomItems[] item = getItems();
 		//kolisi ship dan asteroid
 		for(int i = 0; i < 40; i++) {
 			Rectangle recAstero = new Rectangle(astero[i].getBound());
@@ -306,6 +371,17 @@ public class PapanShooter extends JPanel implements ActionListener {
 			}
 		}
 		
+		for(int i = 0; i< 10; i++) {
+			Rectangle recItem = new Rectangle(item[i].getBound());
+			if(recItem.intersects(recShip) && item[i].isVisible()) {
+				item[i].setVisible(false);
+				int random = (int)(Math.random() * 2);
+				if(random==0 && spaceShip.getHealth()!=8)
+					spaceShip.setHealth(spaceShip.getHealth() + 1);
+				else
+					spaceShip.addMissile();
+			}
+		}
 		
 	}
 	
