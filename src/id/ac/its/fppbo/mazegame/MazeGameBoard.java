@@ -69,18 +69,15 @@ public class MazeGameBoard extends JPanel implements  ActionListener{
 				}	
 			g.drawImage(p.getPlayer(), p.getTileX()*25, p.getTileY()*25, null);
 			
-	}
-	
-	else {
+	}else {
 		g.setColor(Color.ORANGE);
 		g.setFont(font);
 		g.drawString(message, 150, 350);
 		if(a==0) {
 			TestBoard tb = new TestBoard();
 			tb.setVisible(true);
-			
 		}
-		a++;
+		a=1;
 		}
 	
 		

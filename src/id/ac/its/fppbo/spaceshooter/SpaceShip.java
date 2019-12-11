@@ -90,8 +90,8 @@ public class SpaceShip extends Sprite {
 		if(key == KeyEvent.VK_SPACE) {
 			long now = System.currentTimeMillis();
 			if(jumlahPeluru>0){
-				jumlahPeluru--;
 				if(now - lastMissile > 300) {
+					jumlahPeluru--;
 					missileCount = fire(missileCount);
 					lastMissile = now; 
 				}

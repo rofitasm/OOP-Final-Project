@@ -40,6 +40,8 @@ public class PapanShooter extends JPanel implements ActionListener {
 	private static int bulletCount = 0;
 	private static int itemCount = 0;
 	
+	private int startingMissile = 10;
+	
 	//posisi pesawat dan boss
 	private final int PESAWAT_X = 230;
 	private final int PESAWAT_Y = 400;
@@ -61,7 +63,7 @@ public class PapanShooter extends JPanel implements ActionListener {
 		setBackground(Color.black);
 		setFocusable(true);
 		
-		spaceShip = new SpaceShip(PESAWAT_X, PESAWAT_Y, 10);
+		spaceShip = new SpaceShip(PESAWAT_X, PESAWAT_Y, startingMissile);
 		boss = new Boss(BOSS_X, BOSS_Y);
 		
 		timer = new Timer(DELAY, this);
@@ -220,6 +222,10 @@ public class PapanShooter extends JPanel implements ActionListener {
 		g2d.setColor(Color.white);
 		g2d.setFont(small);
 		g2d.drawString(jumlahMissile, 400, 25);
+		
+		if(spaceShip.getJumlahPeluru()==0) {
+			g2d.drawString("Peluru Habis~!", 200, 25);
+		}
 	}
 	
 	private void drawGameOver(Graphics g) {
