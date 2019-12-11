@@ -15,18 +15,20 @@ public class SpaceShip extends Sprite {
 	private int MAX_HEALTH = 8;
 	public long lastMissile = 0;
 	private static int missileCount = 0;
+	private int jumlahPeluru;
 	
-	public SpaceShip(int x, int y) {
+	public SpaceShip(int x, int y, int jumlahPeluru) {
 		super(x,y);
-
+		this.jumlahPeluru = jumlahPeluru;
 		initSpaceShip();
 	}
 	
 	private void initSpaceShip() {
-		missiles = new Missile[10];
+		missiles = new Missile[20];
 		if(missileCount==0) {
-			for(int i = 0;i < 10;i++) {
-				missiles[i] = new Missile(0,0,0);
+			for(int i = 0;i < 20;i++) {
+				if(missiles[i] == null)
+					missiles[i] = new Missile(0,800,0);
 			}
 		}
 		
@@ -44,8 +46,8 @@ public class SpaceShip extends Sprite {
 			x = 0;
 		
 		
-		if(y+height >= 600)
-			y = 600 - height;
+		if(y+height >= 540)
+			y = 540 - height;
 		else if(y <= 200)
 			y = 200;
 	}
@@ -83,9 +85,14 @@ public class SpaceShip extends Sprite {
 		
 		if(key == KeyEvent.VK_SPACE) {
 			long now = System.currentTimeMillis();
-			if(now - lastMissile > 300) {
-				fire(missileCount++);
-				lastMissile = now; 
+			if(jumlahPeluru>0){
+				jumlahPeluru--;
+				if(now - lastMissile > 300) {
+					missileCount = fire(missileCount);
+					lastMissile = now; 
+				}
+			}else {
+				System.out.println("Peluru Habis~!");
 			}
 		}
 		//test hp
@@ -100,14 +107,18 @@ public class SpaceShip extends Sprite {
 		}
 	}
 	
+	public int getJumlahPeluru() {
+		return jumlahPeluru;
+	}
+	
 	public void getHit() {
 		health-=1;
 	}
 	
-	public void fire(int count) {
+	public int fire(int count) {
 //		missiles.add(new Missile(x+width/2-6, y-height, -2));
-		missiles[count%20] = new Missile(x+width/2-6, y-height, -2);
-		
+		missiles[count++%20] = new Missile(x+width/2-6, y-height, -2);
+		return count;
 		
 //		missiles.add(new Missile(x, y-height, -2));
 	}
