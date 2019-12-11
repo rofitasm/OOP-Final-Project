@@ -13,6 +13,7 @@ public class TestMazeGame {
 		fr.setTitle("WaniWanis");
 		fr.add(new MazeGameBoard());
 		fr.setSize(500,600);
+		fr.setLocationRelativeTo(null);
 		fr.setVisible(true);
 		fr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//agar penutupan frame menghentikan jalannya program

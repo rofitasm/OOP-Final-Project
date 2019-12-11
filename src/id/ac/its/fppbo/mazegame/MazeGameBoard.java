@@ -12,8 +12,13 @@ import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import id.ac.its.fppbo.spaceshooter.TestBoard;
+
+
 
 public class MazeGameBoard extends JPanel implements  ActionListener{
+	
+	private int a = 0;
 	
 	private Timer timer;
 	
@@ -70,6 +75,12 @@ public class MazeGameBoard extends JPanel implements  ActionListener{
 		g.setColor(Color.ORANGE);
 		g.setFont(font);
 		g.drawString(message, 150, 350);
+		if(a==0) {
+			TestBoard tb = new TestBoard();
+			tb.setVisible(true);
+			
+		}
+		a++;
 		}
 	
 		
