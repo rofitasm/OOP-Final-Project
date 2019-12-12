@@ -25,10 +25,21 @@ public class MazeGameBoard extends JPanel implements  ActionListener{
 	private MapMazeGame m;
 	private Player p;
 	
+	private int bonusHealth = 0;
+	private int bonusBullet = 0;
+	
 	private boolean win = false;
 
 	private String message = "";
 	private Font font = new Font("Serif", Font.BOLD, 48);
+	
+	private int heartLoc[][] = {{3,7,1},{10,9,1},{3,11,1},{14,12,1},{6,13,1}};
+	private int bulletLoc[][] = {{3,1,1},{6,1,1},{14,1,1},{8,6,1},{5,16,1}};
+
+	private boolean bullet[] = new boolean[5];
+	private boolean heart[] = new boolean[5];
+	
+	
 	
 	
 	public MazeGameBoard() {
@@ -37,6 +48,11 @@ public class MazeGameBoard extends JPanel implements  ActionListener{
 		p = new Player();
 		addKeyListener(new Al());
 		setFocusable(true);
+	
+		for(int i = 0; i < 5; i++) {
+			heart[i] = true;
+			bullet[i] = true;
+		}
 		
 		timer = new Timer(20,this);
 		timer.restart();
@@ -47,6 +63,11 @@ public class MazeGameBoard extends JPanel implements  ActionListener{
 			message = "Selamat!";
 			win = true;
 		}
+		
+		check(p.getTileX(),p.getTileY(),bullet, false);
+		check(p.getTileX(),p.getTileY(),heart, true);
+		
+		
 		repaint();
 	}
 	
@@ -58,12 +79,26 @@ public class MazeGameBoard extends JPanel implements  ActionListener{
 				for(int x=0; x<18; x++) {
 					if(m.getMap(x,y).equals("f")) {
 						g.drawImage(m.getFinish(), x*30, y*30, null);
-					}
+						}
 					if(m.getMap(x,y).equals("o")) {
 						g.drawImage(m.getGrass(), x*30, y*30, null);
-					}
+						}
 					if(m.getMap(x,y).equals("x")) {
 						g.drawImage(m.getWall(), x*30 , y*30, null);
+						}
+					if(m.getMap(x,y).equals("b")) {
+						g.drawImage(m.getGrass(), x*30, y*30, null);
+						for(int i = 0; i < 5 ; i++){
+							if(bulletLoc[i][0] == x && bulletLoc[i][1] == y && bulletLoc[i][2] == 1)
+								g.drawImage(m.getBullet(), x*30, y*30, null);
+							}
+						}
+					if(m.getMap(x,y).equals("h")) {
+						g.drawImage(m.getGrass(), x*30, y*30, null);
+						for(int i = 0; i < 5 ; i++){
+							if(heartLoc[i][0] == x && heartLoc[i][1] == y && heartLoc[i][2] == 1)
+								g.drawImage(m.getHealth(), x*30, y*30, null);
+							}
 						}
 					}
 				}	
@@ -74,13 +109,29 @@ public class MazeGameBoard extends JPanel implements  ActionListener{
 		g.setFont(font);
 		g.drawString(message, 150, 350);
 		if(a==0) {
-			TestBoard tb = new TestBoard();
+			TestBoard tb = new TestBoard(bonusBullet, bonusHealth);
 			tb.setVisible(true);
 		}
 		a=1;
-		}
+	}
+	}
 	
-		
+	public void check(int x, int y, boolean[] arr, boolean type) {
+		for(int i = 0; i < 5 ; i ++) {
+			if(type==false) {
+				if(bulletLoc[i][0] == x && bulletLoc[i][1] == y && arr[i] == true) {
+					arr[i] = false;
+					bulletLoc[i][2] = 0;
+					bonusBullet++;
+				}
+			}else {
+				if(heartLoc[i][0] == x && heartLoc[i][1] == y && arr[i] == true) {
+					arr[i] = false;
+					heartLoc[i][2] = 0;
+					bonusHealth++;
+				}
+			}
+		}
 	}
 	
 	public class Al extends KeyAdapter{

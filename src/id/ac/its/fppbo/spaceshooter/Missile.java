@@ -13,7 +13,6 @@ public class Missile extends Sprite {
 	
 	@Override
 	protected void setLoc(int x, int y) {
-		// TODO Auto-generated method stub
 		super.setLoc(x, y);
 		missileSpeed = 0;
 	}

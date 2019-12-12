@@ -35,12 +35,14 @@ public class PapanShooter extends JPanel implements ActionListener {
 	private int jumlahAsteroid;
 	private boolean inGame = true;
 	private Boss boss;
-	
+	private int bonusBullet = 0;
+	private int bonusHealth = 0;
 	private static int asteroidCount = 0;
 	private static int bulletCount = 0;
 	private static int itemCount = 0;
 	
 	private int startingMissile = 10;
+	private boolean menang = false;
 	
 	//posisi pesawat dan boss
 	private final int PESAWAT_X = 230;
@@ -52,7 +54,9 @@ public class PapanShooter extends JPanel implements ActionListener {
 	JPanel healthBarPanel;
 	
 	
-	public PapanShooter() {
+	public PapanShooter(int bullet, int health) {
+		bonusBullet = bullet;
+		bonusHealth = health;
 		initBoard();
 		initAsteroidWall();
 		initItem();
@@ -63,7 +67,8 @@ public class PapanShooter extends JPanel implements ActionListener {
 		setBackground(Color.black);
 		setFocusable(true);
 		
-		spaceShip = new SpaceShip(PESAWAT_X, PESAWAT_Y, startingMissile);
+		spaceShip = new SpaceShip(PESAWAT_X, PESAWAT_Y, startingMissile+bonusBullet*10);
+		spaceShip.setHealth(spaceShip.getHealth()+bonusHealth);
 		boss = new Boss(BOSS_X, BOSS_Y);
 		
 		timer = new Timer(DELAY, this);
@@ -203,7 +208,7 @@ public class PapanShooter extends JPanel implements ActionListener {
 		
 		Bullet[] bullet = boss.getBullets();
 		
-		for(int i = 0; i < 20; i++) {
+		for(int i = 0; i < 4; i++) {
 			if(bullet[i].isVisible())
 				g2d.drawImage(bullet[i].getImage(), bullet[i].getX(), bullet[i].getY(), this);
 		}
@@ -239,6 +244,8 @@ public class PapanShooter extends JPanel implements ActionListener {
 	private void drawGameOver(Graphics g) {
 
         String msg = "Game Over";
+        if(menang)
+        	msg = "You Win!";
         Font small = new Font("Helvetica", Font.BOLD, 14);
         FontMetrics fm = getFontMetrics(small);
 
@@ -331,15 +338,17 @@ public class PapanShooter extends JPanel implements ActionListener {
 	
 	private void updateBoss() {
 		boss.move();
-		if(boss.getHealth()==0)
+		if(boss.getHealth()==0) {
 			inGame = false;
+			menang = true;
+		}
 		
 	}
 	
 	private void updateBullets() {
 		Bullet[] bullets = boss.getBullets();
 		
-		for(int i = 0; i < 20 ;i++) {
+		for(int i = 0; i < 4 ;i++) {
 			Bullet bullet = bullets[i];
 			
 			if(bullet.y>=600 && bullet.isVisible())
@@ -357,6 +366,7 @@ public class PapanShooter extends JPanel implements ActionListener {
 		Rectangle recShip = new Rectangle(spaceShip.getBound());
 		Rectangle recBoss = new Rectangle(boss.getBound());
 		Missile[] ms = spaceShip.getMissiles();
+		Bullet[] bullets = boss.getBullets();
 		Asteroid[] astero = getAsteroid();
 		RandomItems[] item = getItems();
 		//kolisi ship dan asteroid
@@ -365,7 +375,6 @@ public class PapanShooter extends JPanel implements ActionListener {
 			if(recShip.intersects(recAstero) && astero[i].isVisible()) {
 				astero[i].setVisible(false);
 				spaceShip.getHit();
-				System.out.println(spaceShip.getHealth());
 			}
 			//kolisi asteroid dan missile
 			for(int j = 0; j < 20; j++) {
@@ -394,6 +403,14 @@ public class PapanShooter extends JPanel implements ActionListener {
 					spaceShip.setHealth(spaceShip.getHealth() + 1);
 				else
 					spaceShip.addMissile();
+			}
+		}
+		
+		for(int i = 0; i < 4 ; i++) {
+			Rectangle recBullet = new Rectangle(bullets[i].getBound());
+			if(recShip.intersects(recBullet) && bullets[i].isVisible()) {
+				bullets[i].setVisible(false);
+				spaceShip.getHit();
 			}
 		}
 		

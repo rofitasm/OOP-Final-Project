@@ -8,29 +8,19 @@ import id.ac.its.fppbo.mazegame.MazeGameBoard;
 
 public class TestBoard extends JFrame {
 	
-	public TestBoard() {
-		initUI();
+	public TestBoard(int bullet, int health) {
+		initUI(bullet, health);
 	}
 	
-	private void initUI() {
-		add(new PapanShooter());
+	private void initUI(int bullet, int health) {
+		add(new PapanShooter(bullet, health));
 
-//		add(new MazeGameBoard());
-		
 		setTitle("Test Board");
 		setSize(500,600);
 		
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(() -> {
-			TestBoard tb = new TestBoard();
-			tb.setVisible(true);
-		});
-		System.out.println("lele");
 	}
 	
 }

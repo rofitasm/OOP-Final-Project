@@ -14,7 +14,9 @@ public class MapMazeGame {
 	
 	private Image grass,
 				  wall,
-				  finish; 
+				  finish,
+				  bullet,
+				  health; 
 	
 	public MapMazeGame() {
 		
@@ -27,9 +29,23 @@ public class MapMazeGame {
 		img = new ImageIcon("src/resource/MazeGame/door5.png"); 
 		finish = img.getImage();
 		finish = finish.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
+		img = new ImageIcon("src/resource/MazeGame/bullet.png");
+		bullet = img.getImage();
+		bullet = bullet.getScaledInstance(30, 30, Image.SCALE_DEFAULT);
+		img = new ImageIcon("src/resource/MazeGame/heart.png");
+		health = img.getImage();
+		health = health.getScaledInstance(30, 30, Image.SCALE_DEFAULT);
 		openFile();
 		readFile();
 		closeFile();
+	}
+	
+	public Image getBullet() {
+		return bullet;
+	}
+	
+	public Image getHealth() {
+		return health;
 	}
 	
 	public Image getFinish() {

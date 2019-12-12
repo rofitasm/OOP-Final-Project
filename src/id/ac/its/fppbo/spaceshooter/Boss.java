@@ -26,9 +26,9 @@ public class Boss extends Sprite {
 	}
 	
 	private void initBossBullet() {
-		bullets = new Bullet[20];
+		bullets = new Bullet[4];
 		if(bulletCount == 0) {
-			for(int i = 0; i < 20 ; i++) {
+			for(int i = 0; i < 4 ; i++) {
 				if(bullets[i] == null)
 					bullets[i] = new Bullet(0, 900, 0);
 			}
@@ -60,24 +60,8 @@ public class Boss extends Sprite {
 	}
 	
 	public int fire(int count) {
-		bullets[count++%20] = new Bullet(x+width/2-15, y+height, 1);
-//		bullets.add(new Bullet(x+width/2-6, y+height, 1));
+		bullets[count++%4] = new Bullet(x+width/2-15, y+height, 1);
 		return count;
 	}
-	
-//	//untuk test
-//	public void keyPressed(KeyEvent e) {
-//		int key = e.getKeyCode();
-//		
-//		if(key == KeyEvent.VK_M) {
-//			long now = System.currentTimeMillis();
-//			if(now - lastBullet > 500) {
-//				bulletCount = fire(bulletCount);
-//				lastBullet = now;
-//			}
-//		}
-//	}
-	
-	
 		
 }

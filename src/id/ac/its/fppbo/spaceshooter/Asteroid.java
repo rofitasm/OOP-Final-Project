@@ -14,7 +14,6 @@ public class Asteroid extends Sprite {
 	
 	@Override
 	protected void setLoc(int x, int y) {
-		// TODO Auto-generated method stub
 		super.setLoc(x, y);
 		asteroidSpeed = 0;
 	}

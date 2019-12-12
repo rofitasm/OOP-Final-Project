@@ -110,11 +110,8 @@ public class SpaceShip extends Sprite {
 	}
 	
 	public int fire(int count) {
-//		missiles.add(new Missile(x+width/2-6, y-height, -2));
 		missiles[count++%20] = new Missile(x+width/2-6, y-height, -2);
 		return count;
-		
-//		missiles.add(new Missile(x, y-height, -2));
 	}
 	
 	public void keyReleased(KeyEvent e) {

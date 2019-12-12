@@ -15,7 +15,6 @@ public class Bullet extends Sprite {
 	
 	@Override
 	protected void setLoc(int x, int y) {
-		// TODO Auto-generated method stub
 		super.setLoc(x, y);
 		bulletSpeed = 0;
 	}
@@ -24,18 +23,22 @@ public class Bullet extends Sprite {
 		loadImage("src/resource/SpaceShip/bullet.png");
 		getImageDimension();
 		arah = (int)(Math.random() * 2);
-	}
-	
-	public void move() {
-		y+=bulletSpeed;
 		if(arah == 0)
 			dxb=1;
 		else
 			dxb=-1;
-		x+=dxb;
+	}
+	
+	public void move() {
+		y+=bulletSpeed;
+		if(x+width==500)
+			dxb=-1;
+		if(x==0)
+			dxb=1;
 		if(y>=700) {
 			visible=false;
 		}
+		x+=dxb;
 	}
 	
 	
